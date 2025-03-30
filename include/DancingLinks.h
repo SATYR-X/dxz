@@ -47,3 +47,57 @@ struct ZDDNode {
         : label(other.label), isTerminal(other.isTerminal), lo(other.lo), hi(other.hi) {}
 };
 
+inline ZDDNode* copyNode(ZDDNode* original) {
+    if (original == nullptr){
+        return nullptr;
+    }
+
+    ZDDNode* newNode = new ZDDNode(*original);
+
+    if (newNode->lo != nullptr) {
+        newNode->lo = copyNode(newNode->lo);
+    }
+    if (newNode->hi != nullptr) {
+        newNode->hi = copyNode(newNode->hi);
+    }
+    return newNode;
+}
+
+struct Greater {
+    bool operator()(int a, int b) const{
+        return a > b;
+    }
+}
+
+class DancingLinks
+{
+public:
+    int countNum;
+    int countSolution;
+    DancingLinks(int rows, int cols, const std::vector<std::vector<int>>& matrix);
+    ~DancingLinks();
+    void insert(int r, int c);
+    void cover(int c);
+    void uncover(int c);
+    void columnToVector(std::vector<bool>& vec);
+    size_t hashFunction(int r, ZDDNode* x, ZDDNode* y);
+    ZDDNode* unique(int r, ZDDNode* x, ZDDNode* y);
+    ZDDNode* search();
+    void printZDD(ZDDNode* node);
+    void printTable();
+    void printCache();
+    void printColumnHeaders();
+    void printRemainingColumns();
+    string getColumnState() const;
+
+private:
+    Node* RowIndex;
+    ColumnHeader* root;
+    int ROWS;
+    int COLS;
+    ColumnHeader* ColIndex;
+    ZDDNode* T;
+    ZDDNode* F;
+    std::unordered_map<size_t, ZDDNode*> Z;
+    std::unordered_map<std::string,ZDDNode*> C;
+};
