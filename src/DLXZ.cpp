@@ -82,4 +82,109 @@ void DancingLinks::insert(int r, int c)
     while( cur->down != &ColIndex[c] && cur->down->row < r )
         cur = cur->down;
     newNode->down = cur->down;
+    newNode->up = cur;
+    cur->down->up = newNode;
+    cur->down = newNode;
+    if( RowIndex[r].right == NULL ){
+        RowIndex[r].right = newNode;
+        newNode->left = newNode;
+        newNode->right = newNode;
+    }
+    else{
+        Node* rowHead = RowIndex[r].right;
+        cur = rowHead;
+        while( cur->right != rowHead && cur->right->col < c)
+            cur = cur->right;
+        newNode->right = cur->right;
+        newNode->left = cur;
+        cur->right->left = newNode;
+        cur->right = newNode;
+    }
+}
+
+void DancingLinks::cover( int c )
+{
+    ColumnHeader* col = &ColIndex[c];
+    col->right->left = col->left;
+    col->left->right = col->right;
+    Node* curR, *curC;
+    curC = col->down;
+    while ( curC != col )
+    {
+        Node* noteR = curC;
+        curR = noteR->right;
+        while( curR != noteR ){
+            curR->down->up = curR->up;
+            curR->up->down = curR->down;
+            ColIndex[curR->col].size--;
+            curR = curR->right;
+        }
+        curC = curC->down;
+    }
+    
+}
+
+void DancingLinks::uncover( int c )
+{
+    Node* curR, *curC;
+    ColumnHeader* col = &ColIndex[c];
+    curC = col->up;
+    while( curC != col )
+    {
+        Node* noteR = curC;
+        curR = curC->left;
+        while( curR != noteR )
+        {
+            ColIndex[curR->col].size++;
+            curR->down->up = curR;
+            curR->up->down =curR;
+            curR = curR->left;
+        }
+        curC = curC->up;
+    }
+    col->right->left = col;
+    col->left->right = col;
+}
+
+void DancingLinks::columnToVector(std::vector<bool>& vec)
+{
+    ColumnHeader* cur = root;
+    while( cur->right != root ){
+        vec[cur->right->col - 1] = true;
+        cur = (ColumnHeader*)cur->right;
+    }
+}
+
+bool areSubtreesEqual(ZDDNode* s, ZDDNode* t){
+    if(!s && !t)return true;
+
+    if(!s || !t)return false;
+
+    if(s->label != t->label)return false;
+
+    if(!areSubtreesEqual(s->lo, t->lo)) return false;
+
+    if(!areSubtreesEqual(s->hi, t->lo)) return false;
+
+    return true;
+}
+
+ZDDNode* findSubtree(ZDDNode* s, ZDDNode* t) {
+   if(!s) return nullptr;
+
+   if(areSubtreesEqual(s, t)){
+    return s;
+   } 
+
+   // 在左子树中查找
+    ZDDNode* leftResult = findSubtree(s->lo, t);
+    if (leftResult) {
+        return leftResult; // 在左子树中找到了子树
+    }
+    // 在右子树中查找
+    ZDDNode* rightResult = findSubtree(s->hi, t);
+    if (rightResult) {
+        return rightResult; // 在右子树中找到了子树
+    }
+    return nullptr; // 没有找到子树
 }

@@ -25,7 +25,7 @@ struct Node {
         col = c;
         row = r;
     };
-}
+};
 
 struct ColumnHeader : public Node {
     int size;
@@ -67,7 +67,7 @@ struct Greater {
     bool operator()(int a, int b) const{
         return a > b;
     }
-}
+};
 
 class DancingLinks
 {
