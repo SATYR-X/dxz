@@ -188,3 +188,43 @@ ZDDNode* findSubtree(ZDDNode* s, ZDDNode* t) {
     }
     return nullptr; // 没有找到子树
 }
+
+void DancingLinks::printZDD(ZDDNode* node){
+    if(!node) return;
+
+    std::queue<ZDDNode*> q;
+    q.push(node);
+
+    std::set<int> visited;
+
+    while(!q.empty()) {
+        ZDDNode* current = q.front();
+        q.pop();
+
+        if(!current->isTerminal && visited.find(current->label) == visited.end()) {
+            std::cout<<"Label: "<<current->label<<"{";
+
+        }
+    }
+}
+
+void DancingLinks::printRemainingColumns() {
+    if(root->right == root){
+        std::cout<<"所有列已覆盖\n";
+        return;
+    }
+    std::cout<<"剩余列及其大小：\n";
+    Node* cur = root->right;
+    while (cur != root) {
+        ColumnHeader* header = static_cast<ColumnHeader*>(cur);
+        std::cout<<"列："<<header->col<<"，大小："<<header->size <<" 行：";
+        Node* note = cur->down;
+        while(note!=cur){
+            std::cout<<note->row<<" ";
+            note = note->down;
+        }
+        std::cout<<std::endl;
+        cur = cur->right;
+    }
+    return ;
+}
