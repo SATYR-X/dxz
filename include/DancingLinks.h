@@ -87,6 +87,7 @@ public:
     void printTable();
     void printCache();
     void printColumnHeaders();
+    void printRowNodes();
     void printRemainingColumns();
     string getColumnState() const;
 

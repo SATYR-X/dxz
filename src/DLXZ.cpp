@@ -203,7 +203,122 @@ void DancingLinks::printZDD(ZDDNode* node){
 
         if(!current->isTerminal && visited.find(current->label) == visited.end()) {
             std::cout<<"Label: "<<current->label<<"{";
+            std::cout<<"Lo: "<< (current->lo ? std::to_string(current->lo->label) : "null")
+            << "Hi: "<< (current->hi ? std::to_string(current->hi->label) : "null") 
+            << " }" << std::endl;
+            visited.insert(current->label);
+        }
 
+        if (current->lo) q.push(current->lo);
+        if (current->hi) q.push(current->hi);
+    }
+}
+
+size_t DancingLinks::hashFunction(int r, ZDDNode* x, ZDDNode* y)
+{
+    return std::hash<int>()(r) ^ (std::hash<int>()(x->label) << 1) ^ (std::hash<int>()(y->label) << 2);
+}
+
+ZDDNode* DancingLinks::unique(int r, ZDDNode* x, ZDDNode* y){
+    countNum++;
+
+    std::size_t key = hashFunction(r, x, y);
+    if (Z.find(key) == Z.end()) {
+        ZDDNode* lo = x;
+        ZDDNode* hi = y;
+
+        if(x->isTerminal && y->isTerminal){
+            Z[key] = new ZDDNode(r, lo, hi);
+            return Z[key];
+        }
+
+        if(!x->isTerminal && !y->isTerminal){
+            if (C.find(getColumnState()) != C.end()) {
+                hi = C[getColumnState()];
+            }
+
+            Z[key] = new ZDDNode(r, lo, hi);
+            return Z[key];
+        }
+
+        if(x->isTerminal) {
+            lo = F;
+        } else if (y->isTerminal) {
+            hi = T;
+        }
+
+        Z[key] = new ZDDNode(r, lo, hi);
+    }
+    return Z[key];
+}
+
+std::string DancingLinks::getColumnState() const{
+    std::string columnState(COLS, '0');
+    ColumnHeader* cur = (ColumnHeader*)root->right;
+    while (cur != root) {
+        columnState[cur->col - 1] = '1';
+        cur = (ColumnHeader*)cur->right;
+    }
+    return columnState;
+}
+
+ZDDNode* DancingLinks::search()
+{
+
+}
+
+void DancingLinks::printTable(){
+    std::cout<<"Table:"<<std::endl;
+    for (const auto& pair : Z){
+        ZDDNode* node = pair.second;
+        std::cout<<"Node in Z: "<<std::endl;
+        printZDD(node);
+    }
+}
+
+void DancingLinks::printCache(){
+    std::cout<<"Cache: "<<std::endl;
+    for (const auto& pair : C){
+        std::string key = pair.first;
+        ZDDNode* node = pair.second;
+        std::cout<<"Key: "<<key<<std::endl;
+        printZDD(node);
+    }
+}
+
+void DancingLinks::printColumnHeaders(){
+    std::cout<<"Column Headers:"<<std::endl;
+    ColumnHeader* current = static_cast<ColumnHeader*>(root->right);
+    while (current != root) {
+        std::cout<<"Col: "<<current->col<<" Size: "<<current->size<<" ";
+        Node* cur = current->down;
+        std::cout<<"rows: (";
+        do{
+            std::cout<<cur->row<<" ";
+            cur=cur->down;
+        }while(cur!=current);
+        std::cout<<")";
+        current = static_cast<ColumnHeader*>(current->right);
+    }
+    std::cout<<std::endl;
+}
+
+void DancingLinks::printRowNodes(){
+    std::cout<<"Row Nodes: "<<std::endl;
+    for (int i = 0; i < ROWS; i++){
+        Node* current = RowIndex[i].right;
+        if(current != nullptr){
+            Node* Note = current;
+            std::cout<<"Row: "<<current->row<<" Col: "<<current->col<<" ";
+            current = current->right;
+            while (current != Note ){
+                std::cout<<"Row: "<<current->row<<" Col: "<<current->col<<" ";
+                current = current->right;
+            }
+            std::cout<<std::endl;
+        }
+        else{
+            break;
         }
     }
 }
