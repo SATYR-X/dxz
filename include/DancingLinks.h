@@ -102,3 +102,5 @@ private:
     std::unordered_map<size_t, ZDDNode*> Z;
     std::unordered_map<std::string,ZDDNode*> C;
 };
+
+#endif

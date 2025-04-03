@@ -88,7 +88,7 @@ int main() {
                 {
 
                 DancingLinks dlm(r, c, X);
-                dlm.printColumnHeaders();
+                //dlm.printColumnHeaders();
                 
                 auto start = std::chrono::high_resolution_clock::now();
                 ZDDNode* z = dlm.search();
@@ -103,10 +103,10 @@ int main() {
 
                 std::cout<<"solution nums: "<<dlm.countSolution<<std::endl;
                 
-                std::vector<std::string> paths = binaryTreePaths(z);
-                for ( const auto& path : paths ) {
-                    std::cout<<path<<std::endl;
-                }
+                // std::vector<std::string> paths = binaryTreePaths(z);
+                // for ( const auto& path : paths ) {
+                //     std::cout<<path<<std::endl;
+                // }
 
                 std::cout<<std::endl;
                 }

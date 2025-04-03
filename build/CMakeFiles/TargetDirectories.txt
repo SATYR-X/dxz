@@ -1,0 +1,3 @@
+/home/ljr/myrepo/dxz/build/CMakeFiles/main.dir
+/home/ljr/myrepo/dxz/build/CMakeFiles/edit_cache.dir
+/home/ljr/myrepo/dxz/build/CMakeFiles/rebuild_cache.dir

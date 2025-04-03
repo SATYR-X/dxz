@@ -264,7 +264,59 @@ std::string DancingLinks::getColumnState() const{
 
 ZDDNode* DancingLinks::search()
 {
+    if(root->right == root){
+        countSolution++;
+        return T;
+    }
 
+    std::string columnState = getColumnState();
+
+    if (C.find(columnState) != C.end()) {
+        countSolution++;
+        return C[columnState];
+    }
+
+    ColumnHeader* choose = (ColumnHeader*)root->right;
+    ColumnHeader* cur = choose;
+    while( cur != root )
+    {
+        if( choose->size > cur->size ) choose = cur;
+        cur = (ColumnHeader*)cur->right;
+    }
+
+    if( choose->size <= 0 ){
+        return F;
+    }
+    ZDDNode* x = F;
+
+    cover(choose->col);
+    Node* curC = choose->up;
+    while( curC != choose )
+    {
+        //printColumnHeaders();
+        Node* noteR = curC;
+        Node* curR = curC->right;
+        while( curR != noteR )
+        {
+            cover( curR->col );
+            curR = curR->right;
+        }
+        ZDDNode* y = search();
+        if( y->label != -2 ){
+            x = unique(curC->row, x, y);
+        }
+        //printColumnHeaders();
+        curR = noteR->left;
+        while( curR != noteR )
+        {
+            uncover( curR->col );
+            curR = curR->left;
+        }
+        curC = curC->up;
+    }
+    uncover(choose->col);
+    C[columnState] = x;
+    return x;
 }
 
 void DancingLinks::printTable(){

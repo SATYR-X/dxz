@@ -11,3 +11,5 @@ set(MAIN_SOURCES
     src/main.cpp
     src/DLXZ.cpp
     )
+
+add_executable(main ${MAIN_SOURCES})
