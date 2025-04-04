@@ -92,15 +92,21 @@ public:
     string getColumnState() const;
 
 private:
-    Node* RowIndex;
-    ColumnHeader* root;
-    int ROWS;
-    int COLS;
-    ColumnHeader* ColIndex;
-    ZDDNode* T;
-    ZDDNode* F;
-    std::unordered_map<size_t, ZDDNode*> Z;
-    std::unordered_map<std::string,ZDDNode*> C;
+    Node* RowIndex;          // 行索引数组，存储每行的第一个节点
+    ColumnHeader* root;      // 列头链表的根节点
+    int ROWS;               // 矩阵的行数
+    int COLS;               // 矩阵的列数
+    ColumnHeader* ColIndex; // 列头数组，存储每列的头节点
+    ZDDNode* T;             // ZDD的True终端节点
+    ZDDNode* F;             // ZDD的False终端节点
+    std::unordered_map<size_t, ZDDNode*> Z;  // ZDD节点唯一化表
+                                             // key: 节点的哈希值
+                                             // value: 对应的ZDD节点
+                                             // 用于确保相同结构的ZDD节点只创建一次
+    std::unordered_map<std::string,ZDDNode*> C;  // 列状态缓存表
+                                                 // key: 列状态的字符串表示
+                                                 // value: 对应列状态下的ZDD节点
+                                                 // 用于缓存已计算过的列状态对应的ZDD节点，避免重复计算
 };
 
 #endif
