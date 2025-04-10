@@ -72,6 +72,7 @@ struct Greater {
 class DancingLinks
 {
 public:
+    int CacheUsedCount;
     int countNum;
     int countSolution;
     DancingLinks(int rows, int cols, const std::vector<std::vector<int>>& matrix);

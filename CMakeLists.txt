@@ -12,4 +12,10 @@ set(MAIN_SOURCES
     src/DLXZ.cpp
     )
 
+set(TEST_SOURCES
+    test/test.cpp
+    src/DLXZ.cpp
+)
+
 add_executable(main ${MAIN_SOURCES})
+add_executable(test ${TEST_SOURCES})

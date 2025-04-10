@@ -16,6 +16,7 @@ DancingLinks::DancingLinks(
     int cols, 
     const std::vector<std::vector<int>>& matrix
     ) : ROWS(rows), COLS(cols), countNum(0), countSolution(0){
+        CacheUsedCount = 0;
         T = new ZDDNode(-1,nullptr,nullptr,true);
         F = new ZDDNode(-2,nullptr,nullptr,true);
 
@@ -384,6 +385,7 @@ ZDDNode* DancingLinks::search()
     std::string columnState = getColumnState();
 
     if (C.find(columnState) != C.end()) {
+        CacheUsedCount++;
         countSolution++;
         return C[columnState];
     }

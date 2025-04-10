@@ -125,7 +125,8 @@ int main() {
 
                 std::cout<<"当前文件："<<entry.path().filename().string()<<std::endl;
                 std::cout<<"Search Compulation Time: "<<duration.count()<<" seconds.\n";
-
+                
+                std::cout<<"Cache使用次数："<<dlm.CacheUsedCount<<std::endl;
 
                 std::cout<<"节点数量："<<dlm.countNum<<std::endl;
 
