@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <string>
 #include <chrono>
+#include <regex>
 #include "../include/DancingLinks.h"
 
 namespace fs = std::filesystem;
@@ -30,6 +31,57 @@ void extractCR(const std::string& line, int& c, int& r){
     iss >> c;
     iss >> r;
 }
+
+std::vector<std::vector<int>> fileToMatrix(const fs::path& filePath, int& r, int& c) {
+    std::ifstream file(filePath);
+    if (!file.is_open()) {
+        throw std::runtime_error("无法打开文件: " + filePath.string());
+    }
+
+    std::string line;
+    int columns = 0, rows = 0;
+
+    // 读取第一行，提取列数和行数
+    if (std::getline(file, line)) {
+        std::regex rgx(R"(n\s*=\s*(\d+),\s*m\s*=\s*(\d+))");
+        std::smatch match;
+        if (std::regex_search(line, match, rgx)) {
+            columns = std::stoi(match[1]);
+            rows = std::stoi(match[2]);
+        } else {
+            throw std::runtime_error("格式错误：无法解析列数和行数");
+        }
+    }
+
+    std::cout << "列数：" << columns << " 行数：" << rows << std::endl;
+    c = columns;
+    r = rows;
+
+    // 初始化矩阵
+    std::vector<std::vector<int>> matrix(rows, std::vector<int>(columns, 0));
+
+    // 跳过第二行
+    std::getline(file, line);
+
+    // 读取数据行
+    int currentRow = 0;
+    while (std::getline(file, line) && currentRow < rows) {
+        std::istringstream iss(line);
+        std::string temp;
+        iss >> temp; // 跳过 's'
+        int col;
+        while (iss >> col) {
+            if (col > 0 && col <= columns) {
+                matrix[currentRow][col - 1] = 1;
+            }
+        }
+        ++currentRow;
+    }
+
+    file.close();
+    return matrix;
+}
+
 
 /**
  * @brief 将问题文件转换为矩阵表示
@@ -106,12 +158,13 @@ int main() {
         const std::string folderPath1 = "../exact_cover_benchmark";
         const std::string folderPath2 = "../set_partitioning_benchmarks";
 
-        for(const auto& entry : fs::directory_iterator(folderPath2)) {
+        for(const auto& entry : fs::directory_iterator(folderPath1)) {
             if(entry.is_regular_file() && entry.path().extension() == ".txt") {
                 int r;
                 int c;
 
-                std::vector<std::vector<int>> X = proFileToMat(entry.path(), r, c);
+                //std::vector<std::vector<int>> X = proFileToMat(entry.path(), r, c);
+                std::vector<std::vector<int>> X = fileToMatrix(entry.path(), r, c);
                 
                 {
 
