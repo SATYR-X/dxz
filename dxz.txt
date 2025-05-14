@@ -1,0 +1,27 @@
+function Search(A):
+    if A is empty then
+        return ⊤
+    
+    if col(A) found in C then return C[col(A)]
+
+    Select a column, c  
+    x ← ⊥
+    
+    for r such that A[r, c] = 1 do
+        for j such that A[r, j] = 1 do
+            Delete column j from A
+            for i such that A[i, j] = 1 do
+                Delete row i from A
+
+        y ← Search(A)
+
+        if y ≠ ⊥ then
+            x ← Unique(r, x, y, Z)
+
+        Recover rows & columns deleted in lines 11, 13
+
+    Store pair (col(A), x) into C  
+    return x
+
+z ← Search(X)  
+return root ZDD node z

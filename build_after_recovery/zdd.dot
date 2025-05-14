@@ -1,0 +1,25 @@
+digraph ZDD {
+    rankdir=TB;
+    node [shape=circle];
+    node0x55a175dae760 [label="0"];
+    node0x55a175dae760 -> node0x55a175dae730 [label="0"];
+    node0x55a175dae730 [label="1"];
+    node0x55a175dae730 -> node0x55a175dae0a0 [label="0"];
+    node0x55a175dae0a0 [label="F"];
+    node0x55a175dae730 -> node0x55a175dae6c0 [label="1"];
+    node0x55a175dae6c0 [label="4"];
+    node0x55a175dae6c0 -> node0x55a175dae0a0 [label="0"];
+    node0x55a175dae0a0 [label="F"];
+    node0x55a175dae6c0 -> node0x55a175dae570 [label="1"];
+    node0x55a175dae570 [label="2"];
+    node0x55a175dae570 -> node0x55a175dae0a0 [label="0"];
+    node0x55a175dae0a0 [label="F"];
+    node0x55a175dae570 -> node0x55a175dae070 [label="1"];
+    node0x55a175dae070 [label="T"];
+    node0x55a175dae760 -> node0x55a175dae570 [label="1"];
+    node0x55a175dae570 [label="2"];
+    node0x55a175dae570 -> node0x55a175dae0a0 [label="0"];
+    node0x55a175dae0a0 [label="F"];
+    node0x55a175dae570 -> node0x55a175dae070 [label="1"];
+    node0x55a175dae070 [label="T"];
+}

@@ -1,0 +1,4 @@
+/home/gerylau/repo/dxz/build_nocache/CMakeFiles/main.dir
+/home/gerylau/repo/dxz/build_nocache/CMakeFiles/test.dir
+/home/gerylau/repo/dxz/build_nocache/CMakeFiles/edit_cache.dir
+/home/gerylau/repo/dxz/build_nocache/CMakeFiles/rebuild_cache.dir

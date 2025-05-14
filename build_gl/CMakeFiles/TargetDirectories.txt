@@ -1,0 +1,4 @@
+/home/gerylau/repo/dxz/build_gl/CMakeFiles/main.dir
+/home/gerylau/repo/dxz/build_gl/CMakeFiles/test.dir
+/home/gerylau/repo/dxz/build_gl/CMakeFiles/edit_cache.dir
+/home/gerylau/repo/dxz/build_gl/CMakeFiles/rebuild_cache.dir

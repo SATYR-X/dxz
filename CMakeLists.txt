@@ -9,7 +9,13 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 
 set(MAIN_SOURCES
     src/main.cpp
-    src/DLXZ.cpp
+    src/DLX_with_ZDD.cpp
+    )
+
+set(TEST_SOURCES
+    test/test.cpp
+    src/DLX_with_ZDD.cpp
     )
 
 add_executable(main ${MAIN_SOURCES})
+add_executable(test ${TEST_SOURCES})
